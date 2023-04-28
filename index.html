@@ -1,165 +1,267 @@
 <html lang="en">
 <head>
- <meta charset="UTF-8">
- <meta http-equiv="X-UA-Compatible" content="IE=edge">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Document</title>
- <link rel="stylesheet" href="styles.css">
-<!--1. link to leaflet (css/js) -->
- <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css" />
- <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
- <!---ขนาดแผนที่-->
- <style> 
- body {
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My leaflet map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+ integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+ crossorigin="" />
  
- padding: 0;
- margin: 0;
- }
+ <!-- W3 CSS template -->
+ <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
  
- html,
- body,
- #map {
- height: 100%;
- width: 100%;
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+ integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+ crossorigin=""></script>
+ <style>
+ #mapid {
+ height: 800px;
  }
  </style>
 </head>
 <body>
-<!--2. div map area -->
- <div id="map"></div>
+    <div class="w3-row">
+        <div id="mapid" class="w3-half"></div>
+        <div id="content" class="w3-half">
+        <table class="w3-table w3-striped">
+        <tr>
+        <th>ชื่อสถานที่ท่องเที่ยว</th>
+        <th>ประเภท</th>
+        <th>ระดับ</th>
+        </tr>
+        <tr>
+        <td>น้ำตก A</td>
+        <td>ธรรมชาติ</td>
+        <td>A</td>
+        </tr>
+        </table>
+        </div>
+        </div>
+<script src ="C:\Mean\Grage3-2\GE344\GE344_leaflet(Workspace)\GE344_leaft\mapmytour.geojson"> </script>
+<script>
+var map = L.map("mapid").setView([13.734188414820835 , 100.52846846087306], 13);
  
-<!-- 3. Map view -->
- <script>
-//เปิดแผนที่ครั้งแรกไปตรงจุดไหน ชื่อ Map ข้อ 2,4 ต้องเหมือนกัน
-// 4. Set center and zoom
- 
-// var map = L.map('map').setView([13.743796074955224, 100.56520791561154], 14,);
-// var map = L.map("map", {center: [13.743796074955224, 100.56520791561154], zoom: 17});
- 
-// 5. add based map
- 
-// var OSM = L.tileLayer(
-// "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", 
-// {attribution: "&copy; OpenStreetMap"}
-// ).addTo(map);
- 
-// 6. Layer Groups
-var OSM = L.tileLayer(
- "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", 
- {attribution: "&copy; OpenStreetMap"}
-);
- 
-var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
- attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-});
-
-var OPNVKarte = L.tileLayer('https://tileserver.memomaps.de/tilegen/{z}/{x}/{y}.png', {
-	maxZoom: 18,
-	attribution: 'Map <a href="https://memomaps.de/">memomaps.de</a> <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-});
-
-//รวมญาติ OSM , Esri_WorldImagery , OPNVKarte ต้องเหมือนกับข้างบน
-var baseLayers = {
- "OSM_based map": OSM,
- "Esri_based map": Esri_WorldImagery,
- "OPNVKarte_based map": OPNVKarte,
- // "Topo":OpenTopoMap
- };78
- // เซตให้ zoom 17 และขึ้นต้นด้วย osm
-// create those base layers and add the default ones to the map 
-var map = L.map("map", {center: [13.743796074955224, 100.56520791561154], zoom: 17,layers: [OSM]});
- 
-// 7. create a Layers Control and add it to the map 
- //แสดงผลแผนที 
-L.control.layers(baseLayers).addTo(map);
- 
-// 8. Adding markers
-// 8.1 add marker
- //draggable: true คือลากหมุดได้
-var point = L.marker([13.744232805810679, 100.56254139579457],
- {
- draggable: true, // Make the icon dragable
- title: 'BB Building', // Add a title
- opacity: 1.5
- } // Adjust the opacity
+ var osm = L.tileLayer(
+ "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
  ).addTo(map);
+ var gsat = L.tileLayer(
+ "https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
+ ).addTo(map);
+ 
+ var baseMaps = {
+ OSM: osm,
+ GoogleSat: gsat,
+ };
 
- // 8.2 add pop up on marker
- point.bindPopup("<b>BB Building</b><br>ถนนอโศก")
- .openPopup(); 
- 
- // 8.3 add multi points
-var swu = [
- ["Faculty of Humanities", 13.747068507702805, 100.56527196576859],
- ["Faculty of Socail Sciences", 13.744517046460741, 100.56397426787937],
- ["Grad school", 13.743816164487734, 100.56402242897477],
- ["Post office", 13.746488112796877, 100.56510554978775],
- ["Canteen", 13.744359892491058, 100.56640407260664],
-];
- //https://emojipedia.org/ เว็บอิโมจิ
-// 8.4 change icon
- var greenIcon = L.icon({
-iconUrl: 'https://em-content.zobj.net/thumbs/120/whatsapp/326/closed-mailbox-with-raised-flag_1f4eb.png',
-shadowUrl: 'https://leafletjs.com/examples/custom-icons/leaf-shadow.png',
- 
-iconSize: [40, 40], // size of the icon
-shadowSize: [50, 64], // size of the shadow
-iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-shadowAnchor: [4, 62], // the same for the shadow
-popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-});
-// 8.4 add multi pop up
-for (var i = 0; i < swu.length; i++) {
- 
-marker = new L.marker([swu[i][1], swu[i][2]], {icon: greenIcon})
- .bindPopup(swu[i][0])
- .addTo(map);
+var mymaptour = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "ชื่อสถานที่ท่องเที่ยว": "เอเชียทีค",
+        "ประเภท": "Shopping Street",
+        "ระดับ": 8
+      },
+      "geometry": {
+        "coordinates": [
+          100.50330941836773,
+          13.705218502831869
+        ],
+        "type": "Point"
+      },
+      "id": 0
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "ชื่อสถานที่ท่องเที่ยว": "ไอคอนสยาม",
+        "ประเภท": "Shopping Mall",
+        "ระดับ": 8
+      },
+      "geometry": {
+        "coordinates": [
+          100.5104199260179,
+          13.726737544106527
+        ],
+        "type": "Point"
+      },
+      "id": 1
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "ชื่อสถานที่ท่องเที่ยว": "สวนลุมพินี",
+        "ประเภท": "Natural",
+        "ระดับ": 9
+      },
+      "geometry": {
+        "coordinates": [
+          100.54162071053042,
+          13.73108482187368
+        ],
+        "type": "Point"
+      },
+      "id": 2
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "ชื่อสถานที่ท่องเที่ยว": "ตลาดน้อย",
+        "ประเภท": "Special",
+        "ระดับ": 10
+      },
+      "geometry": {
+        "coordinates": [
+          100.51350626933896,
+          13.733868310039952
+        ],
+        "type": "Point"
+      },
+      "id": 3
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "ชื่อสถานที่ท่องเที่ยว": "วัดยานนาวา",
+        "ประเภท": "Culture",
+        "ระดับ": 10
+      },
+      "geometry": {
+        "coordinates": [
+          100.51387686052988,
+          13.717326366454685
+        ],
+        "type": "Point"
+      },
+      "id": 4
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "ชื่อสถานที่ท่องเที่ยว": "สามย่านมิตรทาวน์",
+        "ประเภท": "Shopping Mall",
+        "ระดับ": 9
+      },
+      "geometry": {
+        "coordinates": [
+          100.52846846087306,
+          13.734188414820835
+        ],
+        "type": "Point"
+      },
+      "id": 5
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "ชื่อสถานที่ท่องเที่ยว": "สวนเบญจกิติ",
+        "ประเภท": "Natural",
+        "ระดับ": 8
+      },
+      "geometry": {
+        "coordinates": [
+          100.5585561130494,
+          13.730592455314294
+        ],
+        "type": "Point"
+      },
+      "id": 6
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "ชื่อสถานที่ท่องเที่ยว": "สยามเซ็นเตอร์",
+        "ประเภท": "Shopping Mall",
+        "ระดับ": 10
+      },
+      "geometry": {
+        "coordinates": [
+          100.53278094471773,
+          13.746250981041854
+        ],
+        "type": "Point"
+      },
+      "id": 7
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "ชื่อสถานที่ท่องเที่ยว": "ท้องฟ้าจำลอง",
+        "ประเภท": "Learning",
+        "ระดับ": 9
+      },
+      "geometry": {
+        "coordinates": [
+          100.58304856038541,
+          13.719921010463324
+        ],
+        "type": "Point"
+      },
+      "id": 8
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "ชื่อสถานที่ท่องเที่ยว": "วัดชัยมงคล",
+        "ประเภท": "Culture",
+        "ระดับ": 10
+      },
+      "geometry": {
+        "coordinates": [
+          100.52285576352125,
+          13.7479572968424
+        ],
+        "type": "Point"
+      },
+      "id": 9
+    }
+  ]
 }
+
+//interaction by mouseover
+var tourLayer = L.geoJSON(mymaptour, {
+ pointToLayer: function (feature, latlng) {
+ return L.marker(latlng).bindPopup(feature.properties.ชื่อสถานที่ท่องเที่ยว);
+ },
+ onEachFeature: function (feature, layer) {
+ layer.on("mouseover", function () {
+ document
+ .getElementById(feature.properties.ชื่อสถานที่ท่องเที่ยว)
+ .classList.add("w3-red");
+ });
  
-// 8.5 add circleMarker and adjust attribute
-var point = L.circleMarker(
- [13.744222384184187, 100.56249848044811],
- {title :'BB Building',
- radius: 30, 
- color: "black", 
- fillColor: "red"}
-).addTo(map);
+ layer.on("mouseout", function () {
+ document
+ .getElementById(feature.properties.ชื่อสถานที่ท่องเที่ยว)
+ .classList.remove("w3-red");
+ });
+ },
+ }).addTo(map);
  
-// 9. Adding line
-var line = L.polyline(
- [[13.737228859138956, 100.56024994458333], [13.743796074955224, 100.56520791561154], [13.744222384184187, 100.56249848044811]], 
- {color: "green", weight: 10}
-).addTo(map);
+ var cont = "";
+ cont += "<table class='w3-table w3-striped'>";
+ cont += "<tr>";
+ cont += "<th>ชื่อสถานที่ท่องเที่ยว</th>";
+ cont += "<th>ประเภท</th>";
+ cont += "<th>ระดับ</th>";
+ cont += "</tr>";
+ for (let i in mymaptour.features) {
+ cont += "<tr id=" + mymaptour.features[i].properties.ชื่อสถานที่ท่องเที่ยว + ">";
+ cont += "<td>" + mymaptour.features[i].properties.ชื่อสถานที่ท่องเที่ยว + "</td>";
+ cont += "<td>" + mymaptour.features[i].properties.ประเภท + "</td>";
+ cont += "<td>" + mymaptour.features[i].properties.ระดับ + "</td>";
+ cont += "</tr>";
+ }
+ cont += "</table>";
+ console.log(cont);
+ document.getElementById("content").innerHTML = cont;
+
+ var overlays = {สถานที่ท่องเที่ยว: tourLayer};
+ //add leyer control
+ L.control.layers(baseMaps, overlays).addTo(map);
  
-// 10. adding polygon clockwise
- //ต้องมีจุดเริ่มต้นและจุดสิ้นสุด ตามเข็มนาฬิกา
-var polygon = L.polygon(
- [
- [13.7456713251864, 100.5643182593378], 
- [13.745459474111142, 100.56535841489116],
- [13.743846147578878, 100.56497254991383], 
- [13.744019972486734, 100.56394917719977],
- [13.7456713251864, 100.5643182593378] 
- ], 
- {color: "red", fillColor: "red", weight: 4}
-).addTo(map);
- 
-// 10.1 add pop up on polygon
-polygon.bindPopup("<b>สนามฟุตบอล</b>")
- .openPopup(); 
- 
-// 11. add description 
-var legend = L.control({position: "bottomleft"});
-legend.onAdd = function(map) {
- var div = L.DomUtil.create("div", "legend");
- div.innerHTML = 
- '<p><b>Srinakharinwirot university</b></p><hr>' +
- 'Created by Paphawarin Chotwichai<br>' +
- '<img src="https://unity.swu.ac.th/wp-content/uploads/2020/07/SWU_Logo_EN_Color.png" width = 50%>';
- return div;
-};
-legend.addTo(map);
- 
- </script>
+</script>
 </body>
 </html>
